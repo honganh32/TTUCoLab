@@ -38,16 +38,16 @@
 <div id="mode-selector" style="margin-bottom: 20px; padding: 10px; background-color: #f0f0f0; border-radius: 4px;">
     <strong>Mode:</strong>
     <label style="margin-right: 20px;">
-        <input type="radio" name="input-mode" value="manual" checked> Manual Entry
+        <input type="radio" name="input-mode" value="recommendation" checked> AI Recommendation
     </label>
     <label>
-        <input type="radio" name="input-mode" value="recommendation"> AI Recommendation
+        <input type="radio" name="input-mode" value="manual"> Manual Entry
     </label>
 </div>
 
 <div id="add-project-section" style="margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9;">
-    <h4 id="section-title">Add New Project</h4>
-    <form id="add-project-form">
+    <h4 id="section-title">AI-Powered Researcher Recommendation</h4>
+    <form id="add-project-form" style="display: none;">
         <div style="margin-bottom: 10px;">
             <label for="input-code">Code:</label>
             <input type="text" id="input-code" placeholder="e.g., 24-0001" required style="width: 200px;">
@@ -72,7 +72,7 @@
         <span id="add-project-status" style="margin-left: 15px;"></span>
     </form>
     
-    <form id="recommendation-form" style="display: none;">
+    <form id="recommendation-form">
         <div style="margin-bottom: 10px;">
             <label for="input-rec-title">Project Title:</label>
             <input type="text" id="input-rec-title" placeholder="Enter project title for recommendations" required style="width: 600px;">
@@ -81,9 +81,24 @@
         <!-- Weight Controls -->
         <div id="weight-controls" style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px;">
             <h5 style="margin-top: 0; margin-bottom: 15px;">
-                Score Weights 
+                Scoring Mode
                 <button type="button" id="score-help-toggle" style="margin-left: 10px; background-color: #2196F3; color: white; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-weight: bold; font-size: 14px;" title="How are scores calculated?">?</button>
             </h5>
+            
+            <!-- Preset Mode Selector -->
+            <div style="margin-bottom: 15px;">
+                <label for="weight-preset" style="display: block; margin-bottom: 8px; font-weight: bold;">Select Scoring Strategy:</label>
+                <select id="weight-preset" style="width: 100%; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="balanced">⚖️ Balanced - Equal consideration of all factors (Recommended)</option>
+                    <option value="theme-focused">🎯 Theme-Focused - Prioritize researchers with theme expertise</option>
+                    <option value="newer-researchers">🆕 Favor Newer Researchers - Penalize extensive experience, reward recent work</option>
+                    <option value="keyword-focused">🔍 Keyword-Focused - Prioritize matching project titles</option>
+                    <option value="custom">⚙️ Custom - Manual weight adjustment</option>
+                </select>
+                <div id="preset-description" style="margin-top: 8px; padding: 8px; background-color: #e3f2fd; border-left: 3px solid #2196F3; font-size: 12px; border-radius: 3px;">
+                    <strong>Balanced Mode:</strong> Gives equal weight (1.0) to all scoring factors. Best for general use.
+                </div>
+            </div>
             
             <!-- Help Section (Hidden by default) -->
             <div id="score-help-section" style="display: none; margin-bottom: 15px; padding: 12px; background-color: #fff; border: 1px solid #2196F3; border-radius: 4px; font-size: 13px;">
@@ -132,26 +147,29 @@
                 </div>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div>
-                    <label for="weight-theme" style="display: block; margin-bottom: 5px;">Theme Match Weight: <span id="weight-theme-value">1.0</span></label>
-                    <input type="range" id="weight-theme" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+            <!-- Manual Weight Sliders (Hidden by default) -->
+            <div id="manual-weight-sliders" style="display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div>
+                        <label for="weight-theme" style="display: block; margin-bottom: 5px;">Theme Match Weight: <span id="weight-theme-value">1.0</span></label>
+                        <input type="range" id="weight-theme" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label for="weight-keyword" style="display: block; margin-bottom: 5px;">Keyword Match Weight: <span id="weight-keyword-value">1.0</span></label>
+                        <input type="range" id="weight-keyword" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label for="weight-contribution" style="display: block; margin-bottom: 5px;">Contribution Weight: <span id="weight-contribution-value">1.0</span></label>
+                        <input type="range" id="weight-contribution" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label for="weight-recency" style="display: block; margin-bottom: 5px;">Recency Weight: <span id="weight-recency-value">1.0</span></label>
+                        <input type="range" id="weight-recency" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+                    </div>
                 </div>
-                <div>
-                    <label for="weight-keyword" style="display: block; margin-bottom: 5px;">Keyword Match Weight: <span id="weight-keyword-value">1.0</span></label>
-                    <input type="range" id="weight-keyword" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
+                <div style="margin-top: 10px; text-align: right;">
+                    <button type="button" id="reset-weights-btn" style="padding: 6px 12px; background-color: #757575; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 13px;">Reset to Default (1.0)</button>
                 </div>
-                <div>
-                    <label for="weight-contribution" style="display: block; margin-bottom: 5px;">Contribution Weight: <span id="weight-contribution-value">1.0</span></label>
-                    <input type="range" id="weight-contribution" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
-                </div>
-                <div>
-                    <label for="weight-recency" style="display: block; margin-bottom: 5px;">Recency Weight: <span id="weight-recency-value">1.0</span></label>
-                    <input type="range" id="weight-recency" min="-3" max="3" step="0.1" value="1.0" style="width: 100%;">
-                </div>
-            </div>
-            <div style="margin-top: 10px; text-align: right;">
-                <button type="button" id="reset-weights-btn" style="padding: 6px 12px; background-color: #757575; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 13px;">Reset to Default (1.0)</button>
             </div>
         </div>
         
@@ -447,6 +465,82 @@ document.addEventListener('DOMContentLoaded', function() {
                 helpSection.style.display = 'none';
             }
         });
+    }
+    
+    // Weight preset system
+    const presetConfigs = {
+        'balanced': {
+            weights: { theme: 1.0, keyword: 1.0, contribution: 1.0, recency: 1.0 },
+            description: '<strong>Balanced Mode:</strong> Gives equal weight (1.0) to all scoring factors. Best for general use.',
+            showSliders: false
+        },
+        'theme-focused': {
+            weights: { theme: 2.0, keyword: 1.0, contribution: 0.5, recency: 1.0 },
+            description: '<strong>Theme-Focused Mode:</strong> Prioritizes researchers with proven expertise in the predicted theme (2.0x theme weight). Reduces emphasis on past contributions (0.5x).',
+            showSliders: false
+        },
+        'newer-researchers': {
+            weights: { theme: 1.0, keyword: 1.0, contribution: -1.0, recency: 2.0 },
+            description: '<strong>Favor Newer Researchers:</strong> Penalizes extensive past work (-1.0x contribution) while rewarding recent activity (2.0x recency). Helps identify emerging talents.',
+            showSliders: false
+        },
+        'keyword-focused': {
+            weights: { theme: 0.5, keyword: 2.0, contribution: 0.5, recency: 1.0 },
+            description: '<strong>Keyword-Focused Mode:</strong> Strongly prioritizes title similarity (2.0x keyword weight). Best when you have a very specific project title.',
+            showSliders: false
+        },
+        'custom': {
+            weights: null, // Keep current values
+            description: '<strong>Custom Mode:</strong> Manually adjust each weight using the sliders below. Weights range from -3 to +3.',
+            showSliders: true
+        }
+    };
+    
+    const presetSelector = document.getElementById('weight-preset');
+    const presetDescription = document.getElementById('preset-description');
+    const manualSliders = document.getElementById('manual-weight-sliders');
+    
+    function applyPreset(presetName) {
+        const config = presetConfigs[presetName];
+        if (!config) return;
+        
+        // Update description
+        if (presetDescription) {
+            presetDescription.innerHTML = config.description;
+        }
+        
+        // Show/hide sliders
+        if (manualSliders) {
+            manualSliders.style.display = config.showSliders ? 'block' : 'none';
+        }
+        
+        // Apply weights if not custom
+        if (config.weights) {
+            const themeSlider = document.getElementById('weight-theme');
+            const keywordSlider = document.getElementById('weight-keyword');
+            const contributionSlider = document.getElementById('weight-contribution');
+            const recencySlider = document.getElementById('weight-recency');
+            
+            if (themeSlider) themeSlider.value = config.weights.theme;
+            if (keywordSlider) keywordSlider.value = config.weights.keyword;
+            if (contributionSlider) contributionSlider.value = config.weights.contribution;
+            if (recencySlider) recencySlider.value = config.weights.recency;
+            
+            updateWeightDisplays();
+        }
+    }
+    
+    if (presetSelector) {
+        presetSelector.addEventListener('change', async function() {
+            applyPreset(this.value);
+            // Recalculate if recommendations are displayed
+            if (currentRecommendations) {
+                await recalculateRecommendations();
+            }
+        });
+        
+        // Apply initial preset
+        applyPreset(presetSelector.value);
     }
     
     // Weight sliders
