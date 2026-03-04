@@ -85,12 +85,11 @@
                 <button type="button" id="toggle-stats-btn" style="padding: 4px 8px; background-color: #2196F3; color: white; border: none; cursor: pointer; border-radius: 3px; font-size: 12px;">📊 Show Stats</button>
             </div>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                <button type="button" class="demo-example-btn" data-title="Deep Learning for Medical Image Analysis" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🧠 Medical AI</button>
-                <button type="button" class="demo-example-btn" data-title="Cybersecurity Threat Detection using Machine Learning" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🔒 Cybersecurity</button>
+                <button type="button" class="demo-example-btn" data-title="Medical Image with ML" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🧠 Medical AI</button>
+                <button type="button" class="demo-example-btn" data-title="Cybersecurity infrastructure improvements" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🔒 Cybersecurity</button>
                 <button type="button" class="demo-example-btn" data-title="Virtual Reality Applications in Education" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🥽 VR Education</button>
-                <button type="button" class="demo-example-btn" data-title="Climate Change Modeling and Prediction" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🌍 Climate Science</button>
+                <button type="button" class="demo-example-btn" data-title="Advanced Renewable Energy Storage System" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🌍 Climate Science</button>
                 <button type="button" class="demo-example-btn" data-title="Natural Language Processing for Social Media Analysis" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">💬 NLP/Social</button>
-                <button type="button" class="demo-example-btn" data-title="Blockchain Technology for Supply Chain Management" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">⛓️ Blockchain</button>
             </div>
         </div>
         
@@ -746,6 +745,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentTutorialStep = 0;
     let tutorialOverlay = null;
+    let tutorialTooltip = null;
     
     function showTutorialStep(stepIndex) {
         if (stepIndex >= tutorialSteps.length) {
@@ -762,9 +762,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Remove existing overlay
+        // Remove existing overlay and tooltip
         if (tutorialOverlay) {
             tutorialOverlay.remove();
+            tutorialOverlay = null;
+        }
+        if (tutorialTooltip) {
+            tutorialTooltip.remove();
+            tutorialTooltip = null;
         }
         
         // Create overlay
@@ -781,21 +786,24 @@ document.addEventListener('DOMContentLoaded', function() {
             pointer-events: none;
         `;
         
-        // Create tooltip
-        const tooltip = document.createElement('div');
-        tooltip.style.cssText = `
-            position: absolute;
+        // Create tooltip - fixed at bottom right
+        tutorialTooltip = document.createElement('div');
+        tutorialTooltip.id = 'tutorial-tooltip';
+        tutorialTooltip.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
             background-color: white;
             border: 2px solid #2196F3;
             border-radius: 8px;
             padding: 16px;
-            max-width: 320px;
+            max-width: 350px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 9999;
             pointer-events: auto;
         `;
         
-        tooltip.innerHTML = `
+        tutorialTooltip.innerHTML = `
             <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #2196F3;">${step.title}</div>
             <div style="font-size: 14px; margin-bottom: 12px; color: #333;">${step.description}</div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -808,22 +816,17 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Position tooltip relative to target
-        const rect = targetElement.getBoundingClientRect();
-        const tooltipTop = step.position === 'bottom' ? rect.bottom + 10 : rect.top - 200;
-        const tooltipLeft = Math.max(10, Math.min(window.innerWidth - 340, rect.left));
-        
-        tooltip.style.top = tooltipTop + 'px';
-        tooltip.style.left = tooltipLeft + 'px';
-        
         // Highlight target element
         targetElement.style.position = 'relative';
         targetElement.style.zIndex = '9999';
         targetElement.style.backgroundColor = '#fff9c4';
         targetElement.style.transition = 'background-color 0.3s';
         
+        // Scroll target element into view
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
         document.body.appendChild(tutorialOverlay);
-        document.body.appendChild(tooltip);
+        document.body.appendChild(tutorialTooltip);
         
         // Add event listeners
         const nextBtn = document.getElementById('tutorial-next-btn');
@@ -855,12 +858,10 @@ document.addEventListener('DOMContentLoaded', function() {
             tutorialOverlay = null;
         }
         
-        // Remove all tooltips
-        document.querySelectorAll('[id^="tutorial"]').forEach(el => {
-            if (el.tagName === 'DIV' && el.style.position === 'absolute') {
-                el.remove();
-            }
-        });
+        if (tutorialTooltip) {
+            tutorialTooltip.remove();
+            tutorialTooltip = null;
+        }
         
         // Reset highlighted elements
         tutorialSteps.forEach(step => {
