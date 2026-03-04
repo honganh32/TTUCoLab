@@ -335,6 +335,7 @@ const RecommendationEngine = (function() {
                         }
                         researcherScores[author].theme_projects += 1;
                         researcherScores[author].projects.push({
+                            code: grant.code,
                             title: grant.title,
                             year: grant.time,
                             theme: grant.theme
@@ -342,7 +343,7 @@ const RecommendationEngine = (function() {
                         
                         // Store theme-matched projects for explanation
                         researcherScores[author].themeMatchedProjects.push({
-                            code: grant.Code,
+                            code: grant.code,
                             title: grant.title,
                             year: grant.time
                         });
@@ -359,7 +360,7 @@ const RecommendationEngine = (function() {
                             try {
                                 const titleVector = await vectorizeText(grant.title);
                                 researcherScores[author].titleVectors.push({
-                                    code: grant.Code,
+                                    code: grant.code,
                                     title: grant.title,
                                     year: grant.time,
                                     vector: titleVector
