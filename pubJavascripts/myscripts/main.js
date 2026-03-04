@@ -194,7 +194,7 @@ loadGrantsDataWithLocal("grants_final.tsv", function(error, data_) {
             
         numberInputTerms++;
              
-        var list = d["Authors"].split(",");
+        var list = d["Authors"].split(",").map(function(author) { return author.trim(); });
         cccc++;
         for (var i=0; i<list.length;i++){
             var term = list[i];
@@ -518,7 +518,7 @@ node2.append("title")
         tttTheme ={};  // Store theme information for each relationship
         data2.forEach(function(d) { 
             var year = d.year;
-            var list = d["Authors"].split(",");
+            var list = d["Authors"].split(",").map(function(author) { return author.trim(); });
             for (var i=0; i<list.length;i++){
                 var term1 = list[i];
                 for (var j=0; j<list.length;j++){
@@ -965,7 +965,7 @@ function mouseoveredLink(l) {
         data2.forEach(function(d) { 
             var year = d.year;
             if (year==l.m){
-                var list = d["Authors"].split(",");
+                var list = d["Authors"].split(",").map(function(author) { return author.trim(); });
                 for (var i=0; i<list.length;i++){
                     if (term1==list[i]){
                         for (var j=0; j<list.length;j++){

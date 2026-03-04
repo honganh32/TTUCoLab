@@ -810,7 +810,12 @@ document.getElementById('rec-select-all').addEventListener('change', function() 
 document.getElementById('accept-recommendation-btn').addEventListener('click', function() {
     const code = document.getElementById('rec-code').value.trim();
     const time = document.getElementById('rec-time').value.trim();
-    const authors = document.getElementById('rec-authors-select').value.trim();
+    let authors = document.getElementById('rec-authors-select').value.trim();
+    
+    // Normalize author names: trim each individual author after splitting
+    if (authors) {
+        authors = authors.split(',').map(function(a) { return a.trim(); }).join(',');
+    }
     
     if (!code || !time) {
         alert('Please enter Code and Time (Year).');
@@ -878,6 +883,9 @@ document.getElementById("add-project-form").addEventListener("submit", function(
     var theme = document.getElementById("input-theme").value.trim();
     var title = document.getElementById("input-title").value.trim();
     var authors = document.getElementById("input-authors").value.trim();
+    
+    // Normalize author names: trim each individual author after splitting
+    authors = authors.split(',').map(function(a) { return a.trim(); }).join(',');
     
     // Validate inputs
     if (!code || !time || !theme || !title || !authors) {
