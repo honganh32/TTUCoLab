@@ -78,6 +78,51 @@
             <input type="text" id="input-rec-title" placeholder="Enter project title for recommendations" required style="width: 600px;">
         </div>
         
+        <!-- Try it Demo Section -->
+        <div id="demo-examples" style="margin-bottom: 15px; padding: 12px; background-color: #e8f5e9; border: 1px solid #4caf50; border-radius: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <strong>🚀 Try These Examples:</strong>
+                <button type="button" id="toggle-stats-btn" style="padding: 4px 8px; background-color: #2196F3; color: white; border: none; cursor: pointer; border-radius: 3px; font-size: 12px;">📊 Show Stats</button>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <button type="button" class="demo-example-btn" data-title="Deep Learning for Medical Image Analysis" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🧠 Medical AI</button>
+                <button type="button" class="demo-example-btn" data-title="Cybersecurity Threat Detection using Machine Learning" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🔒 Cybersecurity</button>
+                <button type="button" class="demo-example-btn" data-title="Virtual Reality Applications in Education" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🥽 VR Education</button>
+                <button type="button" class="demo-example-btn" data-title="Climate Change Modeling and Prediction" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">🌍 Climate Science</button>
+                <button type="button" class="demo-example-btn" data-title="Natural Language Processing for Social Media Analysis" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">💬 NLP/Social</button>
+                <button type="button" class="demo-example-btn" data-title="Blockchain Technology for Supply Chain Management" style="padding: 6px 12px; background-color: white; border: 1px solid #4caf50; cursor: pointer; border-radius: 4px; font-size: 13px; transition: all 0.2s;">⛓️ Blockchain</button>
+            </div>
+        </div>
+        
+        <!-- Quick Stats Dashboard (Hidden by Default) -->
+        <div id="quick-stats-dashboard" style="display: none; margin-bottom: 15px; padding: 15px; background-color: #f3f4f6; border: 1px solid #9ca3af; border-radius: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong>📊 Dataset Statistics</strong>
+                <button type="button" id="close-stats-btn" style="padding: 2px 6px; background-color: #6b7280; color: white; border: none; cursor: pointer; border-radius: 3px; font-size: 11px;">✕ Close</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                <div style="padding: 10px; background-color: white; border-radius: 4px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: #2196F3;" id="stat-total-projects">-</div>
+                    <div style="font-size: 12px; color: #666;">Total Projects</div>
+                </div>
+                <div style="padding: 10px; background-color: white; border-radius: 4px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: #4caf50;" id="stat-unique-researchers">-</div>
+                    <div style="font-size: 12px; color: #666;">Researchers</div>
+                </div>
+                <div style="padding: 10px; background-color: white; border-radius: 4px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: #ff9800;" id="stat-unique-themes">-</div>
+                    <div style="font-size: 12px; color: #666;">Research Themes</div>
+                </div>
+                <div style="padding: 10px; background-color: white; border-radius: 4px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: bold; color: #9c27b0;" id="stat-year-range">-</div>
+                    <div style="font-size: 12px; color: #666;">Year Range</div>
+                </div>
+            </div>
+            <div style="margin-top: 10px; padding: 8px; background-color: #dbeafe; border-left: 3px solid #2196F3; font-size: 12px;">
+                <strong>💡 Tip:</strong> The AI analyzes all these projects to predict themes and recommend researchers based on their expertise, collaboration patterns, and recent work.
+            </div>
+        </div>
+        
         <!-- Weight Controls -->
         <div id="weight-controls" style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 4px;">
             <h5 style="margin-top: 0; margin-bottom: 15px;">
@@ -573,6 +618,295 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // ========== DEMO EXAMPLES ==========
+    document.querySelectorAll('.demo-example-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#e8f5e9';
+            this.style.transform = 'translateY(-2px)';
+            this.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+        });
+        btn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = 'white';
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+        btn.addEventListener('click', function() {
+            const title = this.getAttribute('data-title');
+            document.getElementById('input-rec-title').value = title;
+            // Highlight the input briefly
+            const input = document.getElementById('input-rec-title');
+            input.style.backgroundColor = '#fff9c4';
+            setTimeout(() => {
+                input.style.backgroundColor = 'white';
+            }, 500);
+            // Auto-trigger recommendation
+            document.getElementById('get-recommendations-btn').click();
+        });
+    });
+    
+    // ========== QUICK STATS DASHBOARD ==========
+    async function calculateAndDisplayStats() {
+        try {
+            const response = await fetch('grants_final.tsv');
+            const text = await response.text();
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            
+            // Parse TSV data
+            const projects = [];
+            const researchers = new Set();
+            const themes = new Set();
+            const years = [];
+            
+            for (let i = 1; i < lines.length; i++) { // Skip header
+                const parts = lines[i].split('\t');
+                if (parts.length >= 5) {
+                    const year = parseInt(parts[1]);
+                    const theme = parts[2].trim();
+                    const authors = parts[4].split(',').map(a => a.trim());
+                    
+                    projects.push({ year, theme, authors });
+                    if (!isNaN(year)) years.push(year);
+                    if (theme) themes.add(theme);
+                    authors.forEach(a => { if (a) researchers.add(a); });
+                }
+            }
+            
+            // Update stats display
+            document.getElementById('stat-total-projects').textContent = projects.length;
+            document.getElementById('stat-unique-researchers').textContent = researchers.size;
+            document.getElementById('stat-unique-themes').textContent = themes.size;
+            if (years.length > 0) {
+                const minYear = Math.min(...years);
+                const maxYear = Math.max(...years);
+                document.getElementById('stat-year-range').textContent = `${minYear}-${maxYear}`;
+            }
+        } catch (error) {
+            console.error('Error calculating stats:', error);
+        }
+    }
+    
+    const toggleStatsBtn = document.getElementById('toggle-stats-btn');
+    const closeStatsBtn = document.getElementById('close-stats-btn');
+    const statsDashboard = document.getElementById('quick-stats-dashboard');
+    
+    if (toggleStatsBtn && statsDashboard) {
+        toggleStatsBtn.addEventListener('click', async function() {
+            if (statsDashboard.style.display === 'none') {
+                await calculateAndDisplayStats();
+                statsDashboard.style.display = 'block';
+                this.textContent = '📊 Hide Stats';
+            } else {
+                statsDashboard.style.display = 'none';
+                this.textContent = '📊 Show Stats';
+            }
+        });
+    }
+    
+    if (closeStatsBtn && statsDashboard && toggleStatsBtn) {
+        closeStatsBtn.addEventListener('click', function() {
+            statsDashboard.style.display = 'none';
+            toggleStatsBtn.textContent = '📊 Show Stats';
+        });
+    }
+    
+    // ========== UI TUTORIAL SYSTEM ==========
+    const tutorialSteps = [
+        {
+            element: '#mode-selector',
+            title: '1. Choose Your Mode',
+            description: 'Use <strong>AI Recommendation</strong> to get researcher suggestions based on your project title, or <strong>Manual Entry</strong> to add projects directly.',
+            position: 'bottom'
+        },
+        {
+            element: '#demo-examples',
+            title: '2. Try Quick Examples',
+            description: 'Click any example to instantly see how the AI recommends researchers for different project types.',
+            position: 'bottom'
+        },
+        {
+            element: '#weight-preset',
+            title: '3. Adjust Scoring Strategy',
+            description: 'Choose a preset scoring mode or select <strong>Custom</strong> to fine-tune how researchers are ranked.',
+            position: 'bottom'
+        },
+        {
+            element: '#get-recommendations-btn',
+            title: '4. Get Recommendations',
+            description: 'Click to analyze your project title and receive personalized researcher recommendations with detailed explanations.',
+            position: 'top'
+        },
+        {
+            element: '#recommendations-display',
+            title: '5. Review Results',
+            description: 'Each recommendation shows a detailed score breakdown explaining why that researcher is a good match for your project.',
+            position: 'top'
+        }
+    ];
+    
+    let currentTutorialStep = 0;
+    let tutorialOverlay = null;
+    
+    function showTutorialStep(stepIndex) {
+        if (stepIndex >= tutorialSteps.length) {
+            closeTutorial();
+            return;
+        }
+        
+        const step = tutorialSteps[stepIndex];
+        const targetElement = document.querySelector(step.element);
+        
+        if (!targetElement) {
+            // Skip to next step if element not found
+            showTutorialStep(stepIndex + 1);
+            return;
+        }
+        
+        // Remove existing overlay
+        if (tutorialOverlay) {
+            tutorialOverlay.remove();
+        }
+        
+        // Create overlay
+        tutorialOverlay = document.createElement('div');
+        tutorialOverlay.id = 'tutorial-overlay';
+        tutorialOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9998;
+            pointer-events: none;
+        `;
+        
+        // Create tooltip
+        const tooltip = document.createElement('div');
+        tooltip.style.cssText = `
+            position: absolute;
+            background-color: white;
+            border: 2px solid #2196F3;
+            border-radius: 8px;
+            padding: 16px;
+            max-width: 320px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            pointer-events: auto;
+        `;
+        
+        tooltip.innerHTML = `
+            <div style="font-weight: bold; font-size: 16px; margin-bottom: 8px; color: #2196F3;">${step.title}</div>
+            <div style="font-size: 14px; margin-bottom: 12px; color: #333;">${step.description}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 12px; color: #666;">${stepIndex + 1} of ${tutorialSteps.length}</span>
+                <div>
+                    ${stepIndex > 0 ? '<button id="tutorial-prev-btn" style="padding: 6px 12px; margin-right: 8px; background-color: #9e9e9e; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 13px;">← Back</button>' : ''}
+                    ${stepIndex < tutorialSteps.length - 1 ? '<button id="tutorial-next-btn" style="padding: 6px 12px; margin-right: 8px; background-color: #2196F3; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 13px;">Next →</button>' : ''}
+                    <button id="tutorial-close-btn" style="padding: 6px 12px; background-color: #4caf50; color: white; border: none; cursor: pointer; border-radius: 4px; font-size: 13px;">${stepIndex === tutorialSteps.length - 1 ? 'Finish' : 'Skip'}</button>
+                </div>
+            </div>
+        `;
+        
+        // Position tooltip relative to target
+        const rect = targetElement.getBoundingClientRect();
+        const tooltipTop = step.position === 'bottom' ? rect.bottom + 10 : rect.top - 200;
+        const tooltipLeft = Math.max(10, Math.min(window.innerWidth - 340, rect.left));
+        
+        tooltip.style.top = tooltipTop + 'px';
+        tooltip.style.left = tooltipLeft + 'px';
+        
+        // Highlight target element
+        targetElement.style.position = 'relative';
+        targetElement.style.zIndex = '9999';
+        targetElement.style.backgroundColor = '#fff9c4';
+        targetElement.style.transition = 'background-color 0.3s';
+        
+        document.body.appendChild(tutorialOverlay);
+        document.body.appendChild(tooltip);
+        
+        // Add event listeners
+        const nextBtn = document.getElementById('tutorial-next-btn');
+        const prevBtn = document.getElementById('tutorial-prev-btn');
+        const closeBtn = document.getElementById('tutorial-close-btn');
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                currentTutorialStep++;
+                showTutorialStep(currentTutorialStep);
+            });
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                currentTutorialStep--;
+                showTutorialStep(currentTutorialStep);
+            });
+        }
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeTutorial);
+        }
+    }
+    
+    function closeTutorial() {
+        if (tutorialOverlay) {
+            tutorialOverlay.remove();
+            tutorialOverlay = null;
+        }
+        
+        // Remove all tooltips
+        document.querySelectorAll('[id^="tutorial"]').forEach(el => {
+            if (el.tagName === 'DIV' && el.style.position === 'absolute') {
+                el.remove();
+            }
+        });
+        
+        // Reset highlighted elements
+        tutorialSteps.forEach(step => {
+            const el = document.querySelector(step.element);
+            if (el) {
+                el.style.zIndex = '';
+                el.style.backgroundColor = '';
+            }
+        });
+        
+        currentTutorialStep = 0;
+    }
+    
+    // Add tutorial trigger button to page
+    const tutorialBtn = document.createElement('button');
+    tutorialBtn.id = 'start-tutorial-btn';
+    tutorialBtn.innerHTML = '❓ Start Tutorial';
+    tutorialBtn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background-color: #2196F3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: all 0.3s;
+    `;
+    tutorialBtn.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = '#1976D2';
+        this.style.transform = 'scale(1.05)';
+    });
+    tutorialBtn.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = '#2196F3';
+        this.style.transform = 'scale(1)';
+    });
+    tutorialBtn.addEventListener('click', function() {
+        currentTutorialStep = 0;
+        showTutorialStep(0);
+    });
+    document.body.appendChild(tutorialBtn);
 });
 
 document.getElementById('get-recommendations-btn').addEventListener('click', async function() {
@@ -806,12 +1140,15 @@ function createBreakdownVisualization(rec, safeId) {
         </div>`;
         html += '</div>';
         
-        // Detailed Explanations
+        // Detailed Explanations with Enhanced Tooltips
         html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">';
         
         // 1. Theme Match Explanation
-        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #4CAF50; border-radius: 4px;">';
-        html += '<strong style="color: #4CAF50; display: block; margin-bottom: 8px;">🎯 Theme Match Projects</strong>';
+        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #4CAF50; border-radius: 4px; position: relative;">';
+        html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #4CAF50;">🎯 Theme Match Projects</strong>
+            <span class="info-tooltip" style="background-color: #4CAF50; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; cursor: help; font-weight: bold;" title="Score based on past projects in the predicted research theme. Each project adds to the score, showing expertise in this area.">i</span>
+        </div>`;
         if (explanations.theme_projects && explanations.theme_projects.length > 0) {
             html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">${explanations.theme_projects.length} project(s) in the predicted theme:</div>`;
             html += '<ul style="margin: 0; padding-left: 20px; font-size: 12px; max-height: 150px; overflow-y: auto;">';
@@ -825,16 +1162,20 @@ function createBreakdownVisualization(rec, safeId) {
         html += '</div>';
         
         // 2. Keyword Match Explanation
-        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #2196F3; border-radius: 4px;">';
-        html += '<strong style="color: #2196F3; display: block; margin-bottom: 8px;">🔍 Most Relevant Past Work</strong>';
+        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #2196F3; border-radius: 4px; position: relative;">';
+        html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #2196F3;">🔍 Most Relevant Past Work</strong>
+            <span class="info-tooltip" style="background-color: #2196F3; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; cursor: help; font-weight: bold;" title="TF-IDF similarity between your project title and their past work. High matches (≥85%) get 200x multiplier, medium (>20%) get 50x. Shows direct topical relevance.">i</span>
+        </div>`;
         if (explanations.keyword_matches && explanations.keyword_matches.length > 0) {
             html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">Top ${explanations.keyword_matches.length} similar titles:</div>`;
             html += '<ul style="margin: 0; padding-left: 20px; font-size: 12px; max-height: 150px; overflow-y: auto;">';
             explanations.keyword_matches.forEach(match => {
                 const similarityPercent = (match.similarity * 100).toFixed(1);
                 const bgColor = match.similarity >= 0.85 ? '#c8e6c9' : match.similarity >= 0.5 ? '#e3f2fd' : '#fff';
+                const emoji = match.similarity >= 0.85 ? '🎯' : match.similarity >= 0.5 ? '✓' : '•';
                 html += `<li style="margin: 4px 0; line-height: 1.4; padding: 4px; background-color: ${bgColor}; border-radius: 3px;">
-                    <strong style="color: #2196F3;">${similarityPercent}% match:</strong> ${match.title}
+                    <strong style="color: #2196F3;">${emoji} ${similarityPercent}% match:</strong> ${match.title}
                 </li>`;
             });
             html += '</ul>';
@@ -844,8 +1185,11 @@ function createBreakdownVisualization(rec, safeId) {
         html += '</div>';
         
         // 3. Contribution Explanation (Collaborators)
-        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #FF9800; border-radius: 4px;">';
-        html += '<strong style="color: #FF9800; display: block; margin-bottom: 8px;">👥 Past Collaborators</strong>';
+        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #FF9800; border-radius: 4px; position: relative;">';
+        html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #FF9800;">👥 Past Collaborators</strong>
+            <span class="info-tooltip" style="background-color: #FF9800; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; cursor: help; font-weight: bold;" title="Total projects × 5 (capped at 50 points). Shows research productivity and network size. More projects = more experience and connections.">i</span>
+        </div>`;
         if (explanations.collaborators && explanations.collaborators.length > 0) {
             html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">${explanations.collaborators.length} unique collaborator(s):</div>`;
             html += '<div style="font-size: 12px; max-height: 150px; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 5px;">';
@@ -859,8 +1203,11 @@ function createBreakdownVisualization(rec, safeId) {
         html += '</div>';
         
         // 4. Recency Explanation
-        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #9C27B0; border-radius: 4px;">';
-        html += '<strong style="color: #9C27B0; display: block; margin-bottom: 8px;">⏰ Recent Work (2023-2026)</strong>';
+        html += '<div style="background-color: #fff; padding: 12px; border-left: 4px solid #9C27B0; border-radius: 4px; position: relative;">';
+        html += `<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #9C27B0;">⏰ Recent Work (2023-2026)</strong>
+            <span class="info-tooltip" style="background-color: #9C27B0; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; cursor: help; font-weight: bold;" title="Recent theme-relevant projects × 10 points. Rewards active researchers currently working in the field. Shows current engagement and up-to-date expertise.">i</span>
+        </div>`;
         if (explanations.recent_projects && explanations.recent_projects.length > 0) {
             html += `<div style="font-size: 12px; color: #666; margin-bottom: 8px;">${explanations.recent_projects.length} recent project(s):</div>`;
             html += '<ul style="margin: 0; padding-left: 20px; font-size: 12px; max-height: 150px; overflow-y: auto;">';
@@ -874,6 +1221,18 @@ function createBreakdownVisualization(rec, safeId) {
         html += '</div>';
         
         html += '</div>'; // End grid
+        
+        // Add scoring formula explanation
+        html += `<div style="margin-top: 15px; padding: 12px; background-color: #f0f4f8; border-radius: 4px; border: 1px solid #90caf9;">
+            <strong style="color: #1976D2; display: block; margin-bottom: 8px;">📐 How Scores Are Calculated:</strong>
+            <div style="font-size: 12px; line-height: 1.8; color: #333;">
+                <div><strong>Theme Match:</strong> Number of projects in predicted theme (linear scale)</div>
+                <div><strong>Keyword Match:</strong> TF-IDF similarity: ≥85% = 200×, >20% = 50×, else 0</div>
+                <div><strong>Contribution:</strong> Total projects × 5 (max 50 points)</div>
+                <div><strong>Recency:</strong> Recent theme projects (2023-2026) × 10 points</div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #90caf9;"><strong>Final Score:</strong> (Theme × weight) + (Keyword × weight) + (Contribution × weight) + (Recency × weight)</div>
+            </div>
+        </div>`;
         
         html += '</div>';
         
