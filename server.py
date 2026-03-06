@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Simple HTTP server for the TTUPublication project with POST support for adding projects and recommendations.
+Simple HTTP server for the TTUCoLab project with POST support for adding projects and recommendations.
 Run this script to start the server on localhost:8000
 """
 

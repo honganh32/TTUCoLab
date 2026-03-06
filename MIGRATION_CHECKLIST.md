@@ -1,6 +1,6 @@
 # GitHub Pages Migration Checklist
 
-Use this checklist to migrate your TTUPublication project from local Python server to GitHub Pages.
+Use this checklist to migrate your TTUCoLab project from local Python server to GitHub Pages.
 
 ## Pre-Migration
 
@@ -70,7 +70,7 @@ Use this checklist to migrate your TTUPublication project from local Python serv
 
 ## Step 5: Test Deployment
 
-- [ ] Access your site: `https://YOUR_USERNAME.github.io/TTUPublication/index.html`
+- [ ] Access your site: `https://YOUR_USERNAME.github.io/TTUCoLab/index.html`
 - [ ] Test visualization loads correctly
 - [ ] Test AI Recommendation mode:
   - [ ] Enter a project title (e.g., "Machine Learning Research")
@@ -134,7 +134,7 @@ If you need to revert:
 
 - 📖 [Full Deployment Guide](GITHUB_PAGES_DEPLOYMENT.md)
 - 📖 [README.md](README.md)
-- 🐛 [GitHub Issues](https://github.com/yourusername/TTUPublication/issues)
+- 🐛 [GitHub Issues](https://github.com/yourusername/TTUCoLab/issues)
 
 ---
 

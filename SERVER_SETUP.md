@@ -1,4 +1,4 @@
-# TTUPublication - Setup Instructions
+# TTUCoLab - Setup Instructions
 
 ## Running the "Add Project" Feature
 
@@ -7,9 +7,9 @@ To use the "Add New Project" functionality, you need to run a local web server t
 ### Option 1: Using the Python Server (Recommended)
 
 1. Open PowerShell or Command Prompt
-2. Navigate to the TTUPublication directory:
+2. Navigate to the TTUCoLab directory:
    ```
-   cd e:\TimeArcs-master\TimeArcs-master\TTUPublication
+   cd e:\TimeArcs-master\TimeArcs-master\TTUCoLab
    ```
 3. Run the Python server:
    ```
@@ -31,9 +31,9 @@ To use the "Add New Project" functionality, you need to run a local web server t
 If you prefer not to use the custom server script:
 
 1. Open PowerShell or Command Prompt
-2. Navigate to the TTUPublication directory:
+2. Navigate to the TTUCoLab directory:
    ```
-   cd e:\TimeArcs-master\TimeArcs-master\TTUPublication
+   cd e:\TimeArcs-master\TimeArcs-master\TTUCoLab
    ```
 3. Start a simple Python HTTP server:
    ```

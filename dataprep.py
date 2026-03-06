@@ -2,8 +2,8 @@ import pandas as pd
 import ast
 
 # ---- Config ----
-INPUT_CSV = "E:\TimeArcs-master\TimeArcs-master\TTUPublication\\all.csv"
-OUTPUT_TSV = "E:\TimeArcs-master\TimeArcs-master\TTUPublication\\grants_final.tsv"
+INPUT_CSV = "E:\TimeArcs-master\TimeArcs-master\TTUCoLab\\all.csv"
+OUTPUT_TSV = "E:\TimeArcs-master\TimeArcs-master\TTUCoLab\\grants_final.tsv"
 
 # ---- Load CSV ----
 df = pd.read_csv(INPUT_CSV, encoding="cp1252")
@@ -80,7 +80,7 @@ out = pd.DataFrame({
 out.to_csv(OUTPUT_TSV, sep="\t", index=False)
 print(f"Saved {len(out)} rows to {OUTPUT_TSV}")
 
-# df = pd.read_csv("E:\TimeArcs-master\TimeArcs-master\TTUPublication\\grants_final.tsv", sep="\t")
+# df = pd.read_csv("E:\TimeArcs-master\TimeArcs-master\TTUCoLab\\grants_final.tsv", sep="\t")
 
 # Collect all themes
 # themes = set()

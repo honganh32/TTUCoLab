@@ -1,6 +1,6 @@
-# Contributing to TTUPublication
+# Contributing to TTUCoLab
 
-Thank you for your interest in contributing to the TTUPublication researcher recommendation system! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the TTUCoLab researcher recommendation system! This document provides guidelines and instructions for contributing.
 
 ## Code of Conduct
 
@@ -16,8 +16,8 @@ Thank you for your interest in contributing to the TTUPublication researcher rec
 ```bash
 # On GitHub, click "Fork" button
 # Clone your fork
-git clone https://github.com/YOUR-USERNAME/TTUPublication.git
-cd TTUPublication
+git clone https://github.com/YOUR-USERNAME/TTUCoLab.git
+cd TTUCoLab
 ```
 
 ### 2. Create Development Environment
@@ -402,7 +402,7 @@ By contributing to this project, you agree that your contributions will be licen
 
 ## Acknowledgments
 
-Thank you for contributing to making TTUPublication better! Contributors will be listed in:
+Thank you for contributing to making TTUCoLab better! Contributors will be listed in:
 - README.md Contributors section
 - GitHub Contributors graph
 - Release notes

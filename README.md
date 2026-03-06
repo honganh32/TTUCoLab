@@ -1,4 +1,4 @@
-# TTUPublication - Researcher Recommendation System for TimeArcs
+# TTUCoLab - Researcher Recommendation System for TimeArcs
 
 A machine learning-powered researcher recommendation system that predicts research themes and recommends qualified researchers for new projects based on historical grant data.
 
@@ -23,7 +23,7 @@ Featuring [TimeArcs](https://github.com/CreativeCodingLab/TimeArcs?tab=readme-ov
 ## System Architecture
 
 ```
-TTUPublication/
+TTUCoLab/
 ├── index.html                 # Web UI with recommendation interface
 ├── server.py                  # HTTP server with recommendation API
 ├── recommend_researchers.py   # Core recommendation engine
@@ -64,7 +64,7 @@ Perfect for production deployment with no server maintenance!
 
 4. **Access your site:**
    ```
-   https://yourusername.github.io/TTUPublication/index.html
+   https://yourusername.github.io/TTUCoLab/index.html
    ```
 
 📖 **[Full GitHub Pages Deployment Guide](GITHUB_PAGES_DEPLOYMENT.md)**
@@ -82,8 +82,8 @@ Best for development and testing.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/TTUPublication.git
-cd TTUPublication
+git clone https://github.com/yourusername/TTUCoLab.git
+cd TTUCoLab
 ```
 
 2. Install dependencies

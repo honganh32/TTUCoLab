@@ -1,6 +1,6 @@
 # GitHub Pages Deployment Guide
 
-This guide explains how to deploy the TTUPublication project to GitHub Pages for static hosting with client-side AI recommendations.
+This guide explains how to deploy the TTUCoLab project to GitHub Pages for static hosting with client-side AI recommendations.
 
 ## Overview
 
@@ -92,7 +92,7 @@ https://<username>.github.io/<repository-name>/index.html
 
 For example:
 ```
-https://myusername.github.io/TTUPublication/index.html
+https://myusername.github.io/TTUCoLab/index.html
 ```
 
 ## Features on GitHub Pages
