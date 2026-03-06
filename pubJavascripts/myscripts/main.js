@@ -1,7 +1,7 @@
 //Constants for the SVG
 var margin = {top: 0, right: 0, bottom: 5, left: 15};
 var width = document.body.clientWidth - margin.left - margin.right;
-var height = 800 - margin.top - margin.bottom;
+var height = 600 - margin.top - margin.bottom; // Reduced from 800 to 600
 
 //---End Insert------
 
@@ -68,8 +68,9 @@ var node_drag = d3.behavior.drag()
 
 var data, data2;
 
-var minYear = 2017;
-var maxYear = 2027;
+// Year range will be auto-calculated from data
+var minYear = 2017; // Default, will be updated
+var maxYear = 2027; // Default, will be updated
 var numYear = (maxYear-minYear)+1;
 
 var sourceList = {};
@@ -181,6 +182,18 @@ loadGrantsDataWithLocal("grants_final.tsv", function(error, data_) {
 // d3.tsv("publication.tsv", function(error, data_) {
     if (error) throw error;
     data = data_;
+    
+    // Auto-calculate min and max years from data
+    let years = data.map(d => parseInt(d["Time"])).filter(y => !isNaN(y));
+    if (years.length > 0) {
+        minYear = Math.min(...years);
+        maxYear = Math.max(...years);
+        numYear = (maxYear - minYear) + 1;
+        console.log(`Auto-scaled year range: ${minYear} - ${maxYear}`);
+        
+        // Update xScale with new range
+        xScale = d3.time.scale().range([0, (width-100)/numYear]);
+    }
     
     terms = new Object();
     termMaxMax = 1;
@@ -380,6 +393,11 @@ node2.append("title")
     setupSliderScale(svg);
     drawColorLegend();
     drawTimeLegend();
+    
+    // Populate researcher sidebar list
+    if (typeof window.populateResearcherList === 'function') {
+        window.populateResearcherList();
+    }
   
 
     for (var i = 0; i < termArray.length; i++) {

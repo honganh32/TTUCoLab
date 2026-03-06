@@ -103,14 +103,15 @@ function themeToCategory(theme) {
 
 function getColor(category) {
   var sat = 200;
+  // Updated colors for better visibility on white background
   if (category=="Foundations")
-    return "#e5ff00ff";
+    return "#d97706"; // Amber-600
   else if (category=="Systems")
-    return "#003cffff";
+    return "#2563eb"; // Blue-600
   else if (category=="Data")
-    return "#2fff00ff";
+    return "#059669"; // Emerald-600
   else if (category=="Applications")
-    return "#ff65a5ff";
+    return "#dc2626"; // Red-600
   else{
     return "#000000";    
   }
