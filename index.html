@@ -1016,18 +1016,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.style.borderColor = '#0c5460';
                 currentHighlightedResearcher = researcher;
                 
-                // Trigger visualization highlight (use existing search functionality)
-                if (typeof window.highlightResearcher === 'function') {
+                // Use the global highlightResearcher function
+                if (window.highlightResearcher) {
                     window.highlightResearcher(researcher);
                 } else {
-                    // Fallback: update search box
-                    const searchBox = document.getElementById('myInput');
-                    if (searchBox) {
-                        searchBox.value = researcher;
-                        // Trigger the search event
-                        const event = new Event('input', { bubbles: true });
-                        searchBox.dispatchEvent(event);
-                    }
+                    console.warn('highlightResearcher function not available yet');
                 }
             });
             
@@ -1128,7 +1121,7 @@ function displayRecommendations(response) {
             console.log(`Processing researcher ${idx}:`, rec);
             html += '<tr style="border-bottom: 1px solid #ddd;">';
             html += `<td style="padding: 8px; border: 1px solid #ddd;"><input type="checkbox" class="rec-checkbox" data-researcher="${rec.researcher}" data-researcher-id="${getSafeId(rec.researcher)}"></td>`;
-            html += `<td style="padding: 8px; border: 1px solid #ddd;">${rec.researcher}</td>`;
+            html += `<td style="padding: 8px; border: 1px solid #ddd;"><span class="researcher-name-link" data-researcher="${rec.researcher}" style="cursor: pointer; color: #2196F3; text-decoration: underline; font-weight: 500;">${rec.researcher}</span></td>`;
             html += `<td style="padding: 8px; text-align: center; border: 1px solid #ddd;">${rec.score.toFixed(2)}</td>`;
             html += `<td style="padding: 8px; text-align: center; border: 1px solid #ddd;">${rec.theme_projects}</td>`;
             html += `<td style="padding: 8px; text-align: center; border: 1px solid #ddd;">${rec.total_projects}</td>`;
@@ -1148,6 +1141,20 @@ function displayRecommendations(response) {
         
         recList.innerHTML = html;
         console.log('HTML set to recommendations-list');
+        
+        // Handle researcher name clicks to highlight in visualization
+        document.querySelectorAll('.researcher-name-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const researcher = this.dataset.researcher;
+                console.log('Clicked researcher name:', researcher);
+                if (window.highlightResearcher) {
+                    window.highlightResearcher(researcher);
+                } else {
+                    console.error('highlightResearcher function not available');
+                }
+            });
+        });
         
         // Handle breakdown button clicks
         document.querySelectorAll('.breakdown-btn').forEach(btn => {

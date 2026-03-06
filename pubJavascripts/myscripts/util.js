@@ -38,7 +38,7 @@ function removeColorLegend() {
  svg.selectAll(".nodeLegend").remove();
 }
 function drawTimeLegend() {
-  for (var i=minYear; i<maxYear;i++){
+  for (var i=minYear; i<=maxYear;i++){
     var xx = xStep+xScale((i-minYear));
     svg.append("line")
       .style("stroke", "#00a")
@@ -103,9 +103,9 @@ function themeToCategory(theme) {
 
 function getColor(category) {
   var sat = 200;
-  // Updated colors for better visibility on white background
+  // Updated colors for better visibility and differentiation on white background
   if (category=="Foundations")
-    return "#d97706"; // Amber-600
+    return "#7c3aed"; // Violet-600 - distinct from red
   else if (category=="Systems")
     return "#2563eb"; // Blue-600
   else if (category=="Data")

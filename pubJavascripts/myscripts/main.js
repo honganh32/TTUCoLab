@@ -88,7 +88,7 @@ var relationship;
 var termMaxMax, termMaxMax2, termMaxMax3;
 var terms;
 var NodeG; 
-var xScale = d3.time.scale().range([0, (width-100)/numYear]);
+var xScale = d3.scale.linear().domain([0, numYear - 1]).range([0, width - 100]);
 var xStep = 100;
 var yScale;
 var linkScale;
@@ -189,10 +189,12 @@ loadGrantsDataWithLocal("grants_final.tsv", function(error, data_) {
         minYear = Math.min(...years);
         maxYear = Math.max(...years);
         numYear = (maxYear - minYear) + 1;
-        console.log(`Auto-scaled year range: ${minYear} - ${maxYear}`);
+        console.log(`Auto-scaled year range: ${minYear} - ${maxYear}, numYear: ${numYear}`);
         
-        // Update xScale with new range
-        xScale = d3.time.scale().range([0, (width-100)/numYear]);
+        // Update xScale with new range - use linear scale from 0 to numYear-1
+        xScale = d3.scale.linear()
+            .domain([0, numYear - 1])
+            .range([0, width - 100]);
     }
     
     terms = new Object();
@@ -1080,6 +1082,7 @@ function mouseoutedLink(l) {
 
 function mouseovered(d) {
     if (force.alpha>0) return;
+    if (!d) return; // Safety check
         var list = new Object();
         list[d.name] = new Object();
 
@@ -1175,6 +1178,36 @@ function mouseouted(d) {
         })   
     }      
 }
+
+// Global function to highlight a researcher in the visualization
+window.highlightResearcher = function(researcherName) {
+    console.log('highlightResearcher called for:', researcherName);
+    if (!pNodes) {
+        console.error('pNodes not available yet');
+        return;
+    }
+    
+    // Find the node for this researcher
+    const node = pNodes.find(n => n && n.name === researcherName);
+    if (node) {
+        console.log('Found node:', node);
+        mouseovered(node);
+        
+        // Scroll the visualization into view
+        const svgElement = document.querySelector('svg');
+        if (svgElement) {
+            svgElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    } else {
+        console.error('Node not found for researcher:', researcherName);
+    }
+};
+
+// Global function to reset the visualization highlighting
+window.resetHighlight = function() {
+    console.log('resetHighlight called');
+    mouseouted(null);
+};
 
     // check if a node for a month m already exist.
     function isContainedChild(a, m) {
