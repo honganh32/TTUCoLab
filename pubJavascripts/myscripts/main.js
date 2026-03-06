@@ -1083,6 +1083,15 @@ function mouseoutedLink(l) {
 function mouseovered(d) {
     if (force.alpha>0) return;
     if (!d) return; // Safety check
+    
+    // If a researcher is locked and this is not that researcher, don't change highlight
+    // unless we're explicitly locking a new researcher (checked by lockedResearcher being updated)
+    if (window.lockedResearcher && window.lockedResearcher !== d.name) {
+        // Only allow if this is being set as the new locked researcher
+        // (the highlightResearcher function sets lockedResearcher before calling this)
+        return;
+    }
+    
         var list = new Object();
         list[d.name] = new Object();
 
@@ -1158,6 +1167,11 @@ function mouseovered(d) {
 
 
 function mouseouted(d) {
+    // Don't reset if there's a locked researcher (unless explicitly called by resetHighlight)
+    if (window.lockedResearcher && d !== null) {
+        return;
+    }
+    
     if (force.alpha()==0) {
         nodeG.style("fill-opacity" , 1);
         // svg.selectAll(".layerInfoVis")
@@ -1179,7 +1193,10 @@ function mouseouted(d) {
     }      
 }
 
-// Global function to highlight a researcher in the visualization
+// Global state for locked researcher selection
+window.lockedResearcher = null;
+
+// Global function to highlight a researcher in the visualization (toggleable)
 window.highlightResearcher = function(researcherName) {
     console.log('highlightResearcher called for:', researcherName);
     if (!pNodes) {
@@ -1187,10 +1204,19 @@ window.highlightResearcher = function(researcherName) {
         return;
     }
     
+    // If clicking the same researcher, toggle off
+    if (window.lockedResearcher === researcherName) {
+        console.log('Toggling off researcher:', researcherName);
+        window.lockedResearcher = null;
+        mouseouted(null);
+        return;
+    }
+    
     // Find the node for this researcher
     const node = pNodes.find(n => n && n.name === researcherName);
     if (node) {
         console.log('Found node:', node);
+        window.lockedResearcher = researcherName;
         mouseovered(node);
         
         // Scroll the visualization into view
@@ -1206,6 +1232,7 @@ window.highlightResearcher = function(researcherName) {
 // Global function to reset the visualization highlighting
 window.resetHighlight = function() {
     console.log('resetHighlight called');
+    window.lockedResearcher = null;
     mouseouted(null);
 };
 

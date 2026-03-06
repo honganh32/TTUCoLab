@@ -105,7 +105,7 @@ function getColor(category) {
   var sat = 200;
   // Updated colors for better visibility and differentiation on white background
   if (category=="Foundations")
-    return "#7c3aed"; // Violet-600 - distinct from red
+    return "#ca8a04"; // Dark yellow/gold - distinct from other colors
   else if (category=="Systems")
     return "#2563eb"; // Blue-600
   else if (category=="Data")

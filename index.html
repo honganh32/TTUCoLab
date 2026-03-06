@@ -946,7 +946,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const researcherSearch = document.getElementById('researcher-search');
     const researcherList = document.getElementById('researcher-list');
     
-    let currentHighlightedResearcher = null;
+    // Make currentHighlightedResearcher global for syncing
+    window.currentHighlightedResearcher = null;
     
     // Toggle sidebar (clicking button opens or closes it)
     toggleSidebarBtn.addEventListener('click', function() {
@@ -984,34 +985,47 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             div.addEventListener('mouseenter', function() {
-                if (currentHighlightedResearcher !== researcher) {
+                if (window.currentHighlightedResearcher !== researcher) {
                     this.style.backgroundColor = '#e9ecef';
                 }
             });
             
             div.addEventListener('mouseleave', function() {
-                if (currentHighlightedResearcher !== researcher) {
+                if (window.currentHighlightedResearcher !== researcher) {
                     this.style.backgroundColor = 'white';
                 }
             });
             
             div.addEventListener('click', function() {
-                // Clear previous highlight
-                document.querySelectorAll('.researcher-item').forEach(item => {
-                    item.style.backgroundColor = 'white';
-                    item.style.borderColor = '#dee2e6';
-                });
-                
-                // Highlight clicked item
-                this.style.backgroundColor = '#d1ecf1';
-                this.style.borderColor = '#0c5460';
-                currentHighlightedResearcher = researcher;
-                
-                // Use the global highlightResearcher function
-                if (window.highlightResearcher) {
-                    window.highlightResearcher(researcher);
+                // Check if clicking the same researcher (toggle off)
+                if (window.currentHighlightedResearcher === researcher) {
+                    // Clear highlight
+                    this.style.backgroundColor = 'white';
+                    this.style.borderColor = '#dee2e6';
+                    window.currentHighlightedResearcher = null;
+                    
+                    // Reset visualization
+                    if (window.highlightResearcher) {
+                        window.highlightResearcher(researcher); // This will toggle off
+                    }
                 } else {
-                    console.warn('highlightResearcher function not available yet');
+                    // Clear previous highlight
+                    document.querySelectorAll('.researcher-item').forEach(item => {
+                        item.style.backgroundColor = 'white';
+                        item.style.borderColor = '#dee2e6';
+                    });
+                    
+                    // Highlight clicked item
+                    this.style.backgroundColor = '#d1ecf1';
+                    this.style.borderColor = '#0c5460';
+                    window.currentHighlightedResearcher = researcher;
+                    
+                    // Use the global highlightResearcher function
+                    if (window.highlightResearcher) {
+                        window.highlightResearcher(researcher);
+                    } else {
+                        console.warn('highlightResearcher function not available yet');
+                    }
                 }
             });
             
@@ -1139,6 +1153,36 @@ function displayRecommendations(response) {
                 e.preventDefault();
                 const researcher = this.dataset.researcher;
                 console.log('Clicked researcher name:', researcher);
+                
+                // Check if toggling off the same researcher
+                const isTogglingOff = (window.currentHighlightedResearcher === researcher);
+                
+                // Sync with sidebar: update sidebar highlighting
+                const sidebar = document.getElementById('researcher-sidebar');
+                if (sidebar) {
+                    const sidebarItems = sidebar.querySelectorAll('.researcher-item');
+                    sidebarItems.forEach(item => {
+                        const itemText = item.textContent.trim();
+                        if (itemText === researcher) {
+                            // Toggle if same researcher
+                            if (isTogglingOff) {
+                                item.style.backgroundColor = 'white';
+                                item.style.borderColor = '#dee2e6';
+                                window.currentHighlightedResearcher = null;
+                            } else {
+                                // Clear all and highlight this one
+                                sidebarItems.forEach(i => {
+                                    i.style.backgroundColor = 'white';
+                                    i.style.borderColor = '#dee2e6';
+                                });
+                                item.style.backgroundColor = '#d1ecf1';
+                                item.style.borderColor = '#0c5460';
+                                window.currentHighlightedResearcher = researcher;
+                            }
+                        }
+                    });
+                }
+                
                 if (window.highlightResearcher) {
                     window.highlightResearcher(researcher);
                 } else {
