@@ -22,13 +22,9 @@
 
 <!-- Researcher List Sidebar -->
 <div id="researcher-sidebar" style="position: fixed; right: 0; top: 0; width: 250px; height: 100vh; background-color: #f8f9fa; border-left: 2px solid #dee2e6; overflow-y: auto; z-index: 500; transform: translateX(250px); transition: transform 0.3s ease;">
-    <div style="padding: 15px; background-color: #343a40; color: white; display: flex; justify-content: space-between; align-items: center;">
-        <strong>📋 Researchers</strong>
-        <button id="close-researcher-sidebar" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer; padding: 0; line-height: 1;">&times;</button>
-    </div>
-    <div style="padding: 10px;">
+    <div style="padding: 10px; padding-top: 15px;">
         <input type="text" id="researcher-search" placeholder="Search researchers..." style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; margin-bottom: 10px; box-sizing: border-box;">
-        <div id="researcher-list" style="max-height: calc(100vh - 140px); overflow-y: auto;">
+        <div id="researcher-list" style="max-height: calc(100vh - 250px); overflow-y: auto;">
             <!-- List will be populated by JavaScript -->
         </div>
     </div>
@@ -947,23 +943,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // ========== RESEARCHER SIDEBAR FUNCTIONALITY ==========
     const researcherSidebar = document.getElementById('researcher-sidebar');
     const toggleSidebarBtn = document.getElementById('toggle-researcher-sidebar');
-    const closeSidebarBtn = document.getElementById('close-researcher-sidebar');
     const researcherSearch = document.getElementById('researcher-search');
     const researcherList = document.getElementById('researcher-list');
     
     let currentHighlightedResearcher = null;
     
-    // Toggle sidebar
+    // Toggle sidebar (clicking button opens or closes it)
     toggleSidebarBtn.addEventListener('click', function() {
         if (researcherSidebar.style.transform === 'translateX(0px)') {
             researcherSidebar.style.transform = 'translateX(250px)';
         } else {
             researcherSidebar.style.transform = 'translateX(0px)';
         }
-    });
-    
-    closeSidebarBtn.addEventListener('click', function() {
-        researcherSidebar.style.transform = 'translateX(250px)';
     });
     
     // Function to populate researcher list from visualization data

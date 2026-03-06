@@ -1,5 +1,5 @@
 //Constants for the SVG
-var margin = {top: 0, right: 0, bottom: 5, left: 15};
+var margin = {top: 0, right: 270, bottom: 5, left: 15};
 var width = document.body.clientWidth - margin.left - margin.right;
 var height = 600 - margin.top - margin.bottom; // Reduced from 800 to 600
 
